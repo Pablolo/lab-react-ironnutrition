@@ -63,6 +63,14 @@ class App extends Component {
     return total;
   }
 
+  handleDelete = (name) => {
+    console.log(name);
+    const data = this.state.todaysFood.filter(i => i.name !== name);
+    this.setState({
+      todaysFood: data,
+    })
+  }
+
   render() {
     const { form, filteredFood, todaysFood } = this.state;
     return (
@@ -83,7 +91,7 @@ class App extends Component {
             <h2 className='today-food'>Today's foods</h2>
             <ul>
               {todaysFood.map(item => {
-                return <li>{item.quantity} {item.name} = {item.calories * item.quantity} calories</li>
+                return <li key={item.name}>{item.quantity} {item.name} = {item.calories * item.quantity} calories <img onClick={() => this.handleDelete(item.name)} className='delete-btn' src="/delete.png" alt=""/> </li>
               })}
             </ul>
             <p>Total: {this.totalCal()} cal</p>
