@@ -40,7 +40,8 @@ class App extends Component {
     })
   }
 
-  addToList = (quantity, name, calories) => {
+  addToList = (quantityStr, name, calories) => {
+    let quantity = parseInt(quantityStr, 10);
     let index = this.state.todaysFood.findIndex(x=> x.name === name);
     console.log(index);
     if (index === -1) {
@@ -48,10 +49,8 @@ class App extends Component {
         todaysFood: this.state.todaysFood.concat({quantity, name, calories}),
       })
     } else {
-      console.log('quantity', this.state.todaysFood[index].quantity);
       const copyOfTodays = this.state.todaysFood;
       copyOfTodays[index].quantity += quantity;
-      
       this.setState({
         todaysFood: copyOfTodays,
       })
