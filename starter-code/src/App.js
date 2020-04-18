@@ -13,7 +13,6 @@ class App extends Component {
     form: true,
     filteredFood: [...foods],
     todaysFood: [],
-    totalCalories: 0,
   }
 
   toggleForm = () => {
@@ -47,16 +46,11 @@ class App extends Component {
     })
   }
 
-  showCalories = (fcal, fvalue) => {
-    let sumCal = fcal * fvalue;
-    return sumCal;
+  totalCal = () => {
+    let caloriesAdded = this.state.todaysFood.map(item => item.fcalories * item.fvalue);
+    const total = caloriesAdded.reduce((a,b) => a + b, 0)
+    return total;
   }
-
-  // updateCalories = (sumCal) => {
-  //   this.setState({
-  //     totalCalories: this.state.totalCalories + sumCal,
-  //   })
-  // }
 
   render() {
     const { form, filteredFood, todaysFood } = this.state;
@@ -78,10 +72,10 @@ class App extends Component {
             <h2 className='today-food'>Today's foods</h2>
             <ul>
               {todaysFood.map(item => {
-                return <li>{item.fvalue} {item.fname} = {this.showCalories(item.fcalories, item.fvalue)} calories</li>
+                return <li>{item.fvalue} {item.fname} = {item.fcalories * item.fvalue} calories</li>
               })}
             </ul>
-            <p>Total: {this.showCalories} cal</p>
+            <p>Total: {this.totalCal()} cal</p>
           </div>
         </div> }
       </div>
