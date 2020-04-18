@@ -40,14 +40,26 @@ class App extends Component {
     })
   }
 
-  addToList = (fvalue, fname, fcalories) => {
-    this.setState({
-      todaysFood: this.state.todaysFood.concat({fvalue, fname, fcalories}),
-    })
+  addToList = (quantity, name, calories) => {
+    let index = this.state.todaysFood.findIndex(x=> x.name === name);
+    console.log(index);
+    if (index === -1) {
+      this.setState({
+        todaysFood: this.state.todaysFood.concat({quantity, name, calories}),
+      })
+    } else {
+      console.log('quantity', this.state.todaysFood[index].quantity);
+      const copyOfTodays = this.state.todaysFood;
+      copyOfTodays[index].quantity += quantity;
+      
+      this.setState({
+        todaysFood: copyOfTodays,
+      })
+    }
   }
 
   totalCal = () => {
-    let caloriesAdded = this.state.todaysFood.map(item => item.fcalories * item.fvalue);
+    let caloriesAdded = this.state.todaysFood.map(item => item.calories * item.quantity);
     const total = caloriesAdded.reduce((a,b) => a + b, 0)
     return total;
   }
@@ -72,7 +84,7 @@ class App extends Component {
             <h2 className='today-food'>Today's foods</h2>
             <ul>
               {todaysFood.map(item => {
-                return <li>{item.fvalue} {item.fname} = {item.fcalories * item.fvalue} calories</li>
+                return <li>{item.quantity} {item.name} = {item.calories * item.quantity} calories</li>
               })}
             </ul>
             <p>Total: {this.totalCal()} cal</p>
